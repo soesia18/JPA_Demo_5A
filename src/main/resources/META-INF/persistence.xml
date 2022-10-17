@@ -9,6 +9,8 @@
         <class>at.kaindorf.pojo.Department</class>
         <class>at.kaindorf.pojo.Driver</class>
         <class>at.kaindorf.pojo.Car</class>
+        <class>at.kaindorf.pojo.oneToMany.House</class>
+        <class>at.kaindorf.pojo.oneToMany.Resident</class>
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/testdb"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

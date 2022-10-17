@@ -21,5 +21,6 @@ public class Driver {
     private double skilllevel;
 
     @OneToOne(mappedBy = "driver")
+    @ToString.Exclude
     private Car car;
 }

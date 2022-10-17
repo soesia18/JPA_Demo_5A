@@ -1,6 +1,8 @@
 package at.kaindorf.console;
 
 import at.kaindorf.pojo.*;
+import at.kaindorf.pojo.oneToMany.House;
+import at.kaindorf.pojo.oneToMany.Resident;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -28,12 +30,12 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        list.forEach(System.out::println);
+        /*list.forEach(System.out::println);*/
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PU_testdb");
         EntityManager em = emf.createEntityManager();
 
-        em.getTransaction().begin();
+        /*em.getTransaction().begin();
 
         list.forEach(em::persist);
 
@@ -44,7 +46,7 @@ public class Main {
         Department dept = em.find(Department.class, new DepartmentPK("IT", 42));
         System.out.println(dept);
 
-        /*em.remove(list.get(0));
+        em.remove(list.get(0));
         list.get(13).setLastname("Valesi");*/
 
         /*em.getTransaction().begin();
@@ -54,7 +56,7 @@ public class Main {
 
         em.getTransaction().commit();*/
 
-        em.getTransaction().begin();
+        /*em.getTransaction().begin();
         Driver driver = new Driver("Paulus", 4.2);
         Car car = new Car("Mercedes", 666);
 
@@ -63,20 +65,59 @@ public class Main {
 
         em.persist(driver);
         em.persist(car);
-
-        em.getTransaction().commit();
-
-
-        System.out.println(car);
+        */
 
         /*TypedQuery<SchoolClass> tq =
-                em.createQuery("SELECT sc FROM SchoolClass sc WHERE sc.studentAmount > 30", SchoolClass.class);*/
+                em.createQuery("SELECT sc FROM SchoolClass sc WHERE sc.studentAmount > 30", SchoolClass.class);
         TypedQuery<SchoolClass> tq =
                 em.createNamedQuery("SchoolClass.findByStudentAmount", SchoolClass.class)
                         .setParameter("studentAmount", 30);
 
         List<SchoolClass> schoolClasses = tq.getResultList();
-        schoolClasses.forEach(System.out::println);
+        schoolClasses.forEach(System.out::println);*/
+
+        //TODO: Show 1-to-1 bidirectional
+
+        /*em.getTransaction().begin();
+
+        Driver driver = new Driver("Paulus", 4.2);
+        Car car = new Car("Mercedes", 666);
+
+        car.setDriver(driver);
+        driver.setCar(car);
+
+        em.persist(car);
+
+        em.getTransaction().commit();
+
+        Car car2 = em.find(Car.class, 1);
+        System.out.println(car2);*/
+
+
+        House house = new House(2);
+
+        Resident residentMichael = new Resident("Michael", 5000);
+        Resident residentJosef = new Resident("Josef", 7500);
+
+        house.addResident(residentMichael);
+        house.addResident(residentJosef);
+
+        em.persist(house);
+
+
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+
+
+        System.out.println(house);
+
+        house.removeResident(residentJosef);
+        //em.remove(residentJosef);
+
+        //em.remove(house);
+
+        em.getTransaction().begin();
+        em.getTransaction().commit();
 
         em.close();
         emf.close();
